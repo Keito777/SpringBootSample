@@ -26,7 +26,7 @@ public class HelloService {
 		String name = (String) map.get("name");
 		int age = (Integer) map.get("age");
 		
-		//Employeeクラスに値をセット
+		//Employeeクラス（private名変数に）に値をセット
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeName(name);
