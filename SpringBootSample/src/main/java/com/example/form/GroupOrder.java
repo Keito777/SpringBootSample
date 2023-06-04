@@ -1,6 +1,6 @@
 package com.example.form;
 
-import jakarta.validation.GroupSequence;
+import javax.validation.GroupSequence;
 
 //バリデーションの順番を設定するインターフェース
 //以下のアノテーションを使って、左のインターフェースの順にバリデーションを行う
