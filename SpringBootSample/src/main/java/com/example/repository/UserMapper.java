@@ -12,11 +12,11 @@ import com.example.domain.user.model.MUser;
 @Mapper
 public interface UserMapper {
 
-    /** ユーザー登録 */
+    //ユーザー登録
     public int insertOne(MUser user);
     
     //ユーザー取得（複数件）
-    public List<MUser> findMany();
+    public List<MUser> findMany(MUser user);
     
     //ユーザー取得（１件）
     public MUser findOne(String userId);

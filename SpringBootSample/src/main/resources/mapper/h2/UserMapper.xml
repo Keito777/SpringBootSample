@@ -17,13 +17,31 @@
   <result column="gender" property="gender" />
   <result column="department_id" property="departmentId" />
   <result column="role" property="role" />
+  <association property="department" resultMap="department" />
+  <collection property="salaryList" resultMap="salary" columnPrefix="salary_"/>
 </resultMap>
+<!-- associationタグで、1体1のテーブルの結合を行う。（別のマッピング定義を入れる） -->
+<!-- collectionタグで、１対多のテーブル結合を行う -->
+
+  <!-- マッピング定義(部署テーブル) -->
+<resultMap type="com.example.domain.user.model.Department" id="department">
+    <id column="department_id" property="departmentId" />
+    <result column="department_name" property="departmentName" />
+</resultMap>
+
+ <!-- マッピング定義(給料テーブル) -->
+  <resultMap type="com.example.domain.user.model.Salary" id="salary">
+    <id column="user_id" property="userId" />
+    <id column="year_month" property="yearMonth" />
+    <result column="salary" property="salary" />
+  </resultMap>
 
 <!-- 次に、マッピングしたリポジトリのどのメソッドとマッピングするのかを設定する -->
 <!-- id属性に、メソッド名。タグ名はSQL文 -->
 <!-- メソッドの引数は、#{メソッド引数名}で指定する。（今回は、MUserクラスを受け取るので、MUserクラスのフィールド名をSQL内に指定する） -->
-  <!-- ユーザー1件登録（SQLの定義） -->
-  <insert id="insertOne">
+ 
+ <!-- ユーザー1件登録（SQLの定義） -->
+<insert id="insertOne">
     insert into m_user(
         user_id
       , password
@@ -44,25 +62,48 @@
       , #{departmentId}
       , #{role}
     )
-  </insert>
+</insert>
   
   <!-- ユーザー複数件取得 -->
    <!-- resultType属性には戻り値のデータ型を指定 -->
-  <select id="findMany" resultType="MUser">
+   <!-- ifタグを使うことで動的SQLの作成（test属性に条件を記述。trueなのタグないのSQLが実行） -->
+<select id="findMany" resultType="MUser">
     select
       *
     from
       m_user
-  </select>
+    <where>
+    <if test="userId != null">
+        user_id like '%' || #{userId} || '%'
+   	</if>
+    <if test="userName != null">
+        and user_name like '%' || #{userName} || '%'
+    </if>
+  </where>
+</select>
   
   <!-- ユーザー1件検索 -->
   <select id="findOne" resultMap="user">
     select
-      *
+        m_user.user_id
+      , m_user.password
+      , m_user.user_name
+      , m_user.birthday
+      , m_user.age
+      , m_user.gender
+      , m_department.department_id
+      , m_department.department_name
+      , t_salary.user_id as salary_user_id
+      , t_salary.year_month as salary_year_month
+      , t_salary.salary as salary_salary
     from
       m_user
+      left join m_department
+        on m_user.department_id = m_department.department_id
+      left join t_salary
+        on m_user.user_id = t_salary.user_id
     where
-      user_id = #{userId}
+      m_user.user_id = #{userId}
   </select>
   
   <!-- ユーザー1件更新 -->
