@@ -7,20 +7,23 @@ import com.example.domain.user.model.MUser;
 //UserServiceImpl.javaなどで用いるインターフェース
 public interface UserService {
 
-    /** ユーザー登録 */
+    //ユーザー登録
     public void signup(MUser user);
     
-    /** ユーザー取得 */
+    //ユーザー取得
     public List<MUser> getUsers(MUser user);
     
-    /** ユーザー取得（１件） */
+    //ユーザー取得（１件）
     public MUser getUserOne(String userId);
     
-    /** ユーザー更新（１件） */
+    //ユーザー更新（１件）
     public void updateUserOne(String userId,
     		String password,
     		String userName);
     
-    /** ユーザー削除（１件） */
+    //ユーザー削除（１件）
     public void deleteUserOne(String userId);
+    
+    //ログインユーザー情報取得
+    public MUser getLoginUser(String userId);
 }

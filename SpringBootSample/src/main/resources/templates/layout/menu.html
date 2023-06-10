@@ -1,7 +1,10 @@
+<!-- sec:authorize属性→権限により画面に表示するかどうかを決める（引数にロールを設定し、ログインユーザーがそのロールを持っていれば項目を表示する。） -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/layout}">
+  layout:decorate="~{layout/layout}"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -9,6 +12,9 @@
     <ul class="nav nav-pills nav-stacked">
       <li role="presentation">
         <a class="nav-link" th:href="@{'/user/list'}">ユーザ一覧</a>
+      </li>
+      <li role="presentation" sec:authorize="hasRole('ADMIN')">
+        <a class="nav-link" th:href="@{'/admin'}">アドミン専用</a>
       </li>
     </ul>
   </div>
